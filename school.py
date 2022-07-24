@@ -52,6 +52,8 @@ def getSchedule():
             schedule = [classes[0], englishRoom, classes[5], ancmodRoom, classes[1], mathRoom, classes[3], digitalRoom]
         elif currentDay == 10 and day == 4:
             day10 = True 
+        elif day < 4:
+          print("its saturday or sunday")
         else:
             pushNotification("PROCESS HAS ENCOUNTERED AN ERROR, FIX ASAP", "ERROR", "error")
             print(currentDay, day, schedule, now, target, day10)
