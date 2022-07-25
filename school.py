@@ -13,7 +13,7 @@ ancmodRoom = 'MSP'
 peRoom = ['OC2', 'MA7']
 digitalRoom = 'DA3'
 religionRoom = 'MK4'
-currentDay = 1
+currentDay = 2
 schedule = []
 day10 = False
 day = 0
@@ -29,8 +29,10 @@ def pushNotification(description, title, type):
         "type": type,
     })
 def getSchedule(): 
+    global currentDay
+    global schedule
     day10 = False
-    data = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q=Bundaberg&units=metric&APPID=6be1c15b5cabc76d52b63dd7c23a3245")
+    #data = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q=Bundaberg&units=metric&APPID=6be1c15b5cabc76d52b63dd7c23a3245")
     if currentDay == 1 and day == 0:
         schedule = [classes[2], scienceRoom[0], classes[1], mathRoom, classes[5], ancmodRoom, classes[0], englishRoom]
     elif currentDay == 2 and day == 1:
@@ -51,21 +53,28 @@ def getSchedule():
         schedule = [classes[0], englishRoom, classes[5], ancmodRoom, classes[1], mathRoom, classes[3], digitalRoom]
     elif currentDay == 10 and day == 4:
         day10 = True 
-    elif day < 4:
+    elif day > 4:
         print("its saturday or sunday")
+        exit()
     else:
         pushNotification("PROCESS HAS ENCOUNTERED AN ERROR, FIX ASAP", "ERROR", "error")
         print(currentDay, day, schedule, now, target, day10)
         exit()
     if day10 is True:
         currentDay = 1
-        message = f"Good Morning! \nToday is Day 10, so check SIA for your schedule. \nThe current temperature is {data.json().get('main')['temp']}°C"
+        #{data.json().get('main')['temp']}°C
+        message = f"Good Morning! \nToday is Day 10, so check SIA for your schedule."
+        #\nThe current temperature is
     else:
+        
         currentDay += 1
-        message = f"Good Morning! \nHeres your schedule for today! \n{schedule[0]} in {schedule[1]}, {schedule[2]} in {schedule[3]}, {schedule[4]} in {schedule[5]} and finally {schedule[6]} in {schedule[7]}\nThe current temperature is {data.json().get('main')['temp']}°C"
+        #{data.json().get('main')['temp']}°C
+        message = f"Good Morning! \nHeres your schedule for today! \n{schedule[0]} in {schedule[1]}, {schedule[2]} in {schedule[3]}, {schedule[4]} in {schedule[5]} and finally {schedule[6]} in {schedule[7]}"
+    #\nThe current temperature is
     pushNotification(message, "Daily Notification!", "success")
 while True:
     time.sleep(2)
+    print(now)
     now = DT.datetime.now()
     day = DT.datetime.today().weekday()
     if target < now:
